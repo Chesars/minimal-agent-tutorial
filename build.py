@@ -33,13 +33,21 @@ def build_site():
             shutil.rmtree(output_static)
         shutil.copytree(static_dir, output_static)
     
-    # Generate Pygments CSS for syntax highlighting
+    # Generate Pygments CSS for syntax highlighting (both light and dark themes)
     output_static = output_dir / "static"
     output_static.mkdir(exist_ok=True)
-    formatter = HtmlFormatter(style='github-dark')
-    pygments_css = formatter.get_style_defs('.highlight')
-    with open(output_static / "pygments.css", "w") as f:
-        f.write(pygments_css)
+    
+    # Light theme
+    formatter_light = HtmlFormatter(style='default')
+    pygments_css_light = formatter_light.get_style_defs('.highlight')
+    with open(output_static / "pygments-light.css", "w") as f:
+        f.write(pygments_css_light)
+    
+    # Dark theme
+    formatter_dark = HtmlFormatter(style='github-dark')
+    pygments_css_dark = formatter_dark.get_style_defs('.highlight')
+    with open(output_static / "pygments-dark.css", "w") as f:
+        f.write(pygments_css_dark)
     
     # Read markdown content
     with open(source_file, "r", encoding="utf-8") as f:

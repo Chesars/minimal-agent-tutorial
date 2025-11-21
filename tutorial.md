@@ -21,12 +21,12 @@ Pseudocode:
 messages = [{"role": "user", "content": "Help me fix the ValueError in main.py"}]
 while True:
 	lm_output = query_lm(messages)
-	action = parse_action(lm_output)  # we need to separate the action from the rest of the output
+	action = parse_action(lm_output)  # separate the action from output
 	output = execute_action(action)
 	print(lm_output["action"], "\n\n", output)
 	# Update the message history for the next round
-	messages.append({"role": .., lm_output)  # LM needs to knows what was executed in the last step
-	messages.append({"role": ..., output)     # and the execution output
+	messages.append({"role": .., lm_output)  # LM needs to knows what was executed
+	messages.append({"role": ..., output)    # and the execution output
 ```
 
 !!! what's up with the `role` field?
