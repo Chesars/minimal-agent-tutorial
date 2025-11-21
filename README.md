@@ -24,6 +24,26 @@ This repository hosts the code for [minimal-agent.com](https://minimal-agent.com
 
 3. The generated site will be in the `output/` directory. Open `output/index.html` in your browser.
 
+## Development Mode
+
+For live development with automatic rebuilding:
+
+```bash
+python build.py --serve
+```
+
+This will:
+- Start a local server at `http://localhost:8000`
+- Watch for changes to `.md`, `.html`, `.css`, and `.js` files
+- Automatically rebuild the site when files change
+- Just refresh your browser to see updates!
+
+You can specify a custom port:
+
+```bash
+python build.py --serve --port 3000
+```
+
 ## Markdown Features
 
 The site supports:

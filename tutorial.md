@@ -4,7 +4,7 @@ So you want to build your own AI agent? The good news: It's super simple, especi
 
 This tutorial will walk you through the basics to get your own agent that follows an initial prompt and can use the terminal. It's not going to use any packages (other than to query a LM), so you'll understand the entire flow.
 
-And if you think this is too simplified and can never work in practice: Our [`mini` agent](mini-swe-agent.com) is built exactly the same (just with a bit more fluff to support more models be a bit more convenient) and it scores up to 74% on [SWE-bench verified](https://www.swebench.com/), only a few percent below highly optimized agents. 
+And if you think this is too simplified and can never work in practice: Our [`mini` agent](https://mini-swe-agent.com) is built exactly the same (just with a bit more fluff to support more models be a bit more convenient) and it scores up to 74% on [SWE-bench verified](https://www.swebench.com/), only a few percent below highly optimized agents. 
 
 Your final result will look like this:
 

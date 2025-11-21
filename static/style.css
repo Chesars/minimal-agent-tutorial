@@ -88,6 +88,22 @@ pre code {
     font-size: 0.9rem;
 }
 
+/* Syntax highlighting overrides */
+.highlight {
+    background-color: #0d1117;
+    border-radius: 5px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.highlight pre {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
 /* Admonitions */
 .admonition {
     padding: 1rem;

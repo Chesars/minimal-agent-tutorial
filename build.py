@@ -2,9 +2,17 @@
 """
 Build script to convert Markdown files to static HTML website.
 """
-import markdown
+import argparse
+import http.server
+import socketserver
+import threading
+import time
 from pathlib import Path
 import shutil
+import markdown
+from pygments.formatters import HtmlFormatter
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 
 def build_site():
@@ -24,6 +32,14 @@ def build_site():
         if output_static.exists():
             shutil.rmtree(output_static)
         shutil.copytree(static_dir, output_static)
+    
+    # Generate Pygments CSS for syntax highlighting
+    output_static = output_dir / "static"
+    output_static.mkdir(exist_ok=True)
+    formatter = HtmlFormatter(style='github-dark')
+    pygments_css = formatter.get_style_defs('.highlight')
+    with open(output_static / "pygments.css", "w") as f:
+        f.write(pygments_css)
     
     # Read markdown content
     with open(source_file, "r", encoding="utf-8") as f:
@@ -77,6 +93,92 @@ def build_site():
     print(f"  - Open: file://{output_file.absolute()}")
 
 
+class ChangeHandler(FileSystemEventHandler):
+    """Watch for file changes and rebuild the site."""
+    
+    def __init__(self):
+        self.last_build = 0
+        self.debounce_seconds = 0.5
+    
+    def on_modified(self, event):
+        if event.is_directory:
+            return
+        
+        # Only rebuild for relevant files
+        relevant_extensions = {'.md', '.html', '.css', '.js'}
+        file_path = Path(event.src_path)
+        
+        if file_path.suffix not in relevant_extensions:
+            return
+        
+        # Debounce - avoid rebuilding too frequently
+        current_time = time.time()
+        if current_time - self.last_build < self.debounce_seconds:
+            return
+        
+        self.last_build = current_time
+        print(f"\n🔄 Detected change in {file_path.name}, rebuilding...")
+        try:
+            build_site()
+            print("✓ Rebuild complete!")
+        except Exception as e:
+            print(f"✗ Build failed: {e}")
+
+
+def serve_site(port=8000):
+    """Start a local development server."""
+    output_dir = Path("output")
+    
+    if not output_dir.exists():
+        print("Building site first...")
+        build_site()
+    
+    class Handler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=str(output_dir), **kwargs)
+        
+        def log_message(self, format, *args):
+            # Suppress standard server logs for cleaner output
+            pass
+    
+    # Start file watcher in background
+    event_handler = ChangeHandler()
+    observer = Observer()
+    observer.schedule(event_handler, ".", recursive=True)
+    observer.start()
+    
+    # Start HTTP server
+    with socketserver.TCPServer(("", port), Handler) as httpd:
+        print(f"\n🚀 Development server running at http://localhost:{port}")
+        print("📝 Watching for file changes...")
+        print("   Press Ctrl+C to stop\n")
+        
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("\n\n👋 Stopping server...")
+            observer.stop()
+            observer.join()
+
+
 if __name__ == "__main__":
-    build_site()
+    parser = argparse.ArgumentParser(description="Build static site from Markdown")
+    parser.add_argument(
+        "--serve",
+        action="store_true",
+        help="Start development server with live reload"
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port for development server (default: 8000)"
+    )
+    
+    args = parser.parse_args()
+    
+    if args.serve:
+        serve_site(args.port)
+    else:
+        build_site()
 
