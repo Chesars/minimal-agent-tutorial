@@ -25,11 +25,18 @@ while True:
 	output = execute_action(action)
 	print(lm_output["action"], "\n\n", output)
 	# Update the message history for the next round
-	messages.append({"role": .., lm_output)  # LM needs to knows what was executed
+	messages.append({"role": .., lm_output)  # remember what was executed
 	messages.append({"role": ..., output)    # and the execution output
 ```
 
-!!! what's up with the `role` field?
+??? info "What's up with the `role` field?"
+    The `role` field indicates who sent the message in the conversation. Common roles are:
+    
+    - `"user"` - Messages from the user/human
+    - `"assistant"` - Messages from the AI model
+    - `"system"` - System prompts that set context/instructions
+    
+    Different LM APIs may have slightly different conventions for how to structure these messages.
 
 
 So to get this to work, we only need to implement two things:
@@ -39,13 +46,176 @@ So to get this to work, we only need to implement two things:
 3. Executing the action (very simple)
 
 
-Let's start with the first step. Click on the tabs to find the right LM for you. 
+Let's start with the first step. Click on the tabs to find the right LM for you.
 
-```python
-def query_lm(messages):
-   ...
-```
+=== "OpenAI"
 
+    Install the OpenAI package:
+    ```bash
+    pip install openai
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    from openai import OpenAI
+    
+    client = OpenAI(
+        api_key="your-api-key-here"
+    )  # or set OPENAI_API_KEY env var
+    
+    def query_lm(messages):
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=messages
+        )
+        return response.choices[0].message.content
+    ```
+
+=== "Anthropic"
+
+    Install the Anthropic package:
+    ```bash
+    pip install anthropic
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    from anthropic import Anthropic
+    
+    client = Anthropic(
+        api_key="your-api-key-here"
+    )  # or set ANTHROPIC_API_KEY env var
+    
+    def query_lm(messages):
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=4096,
+            messages=messages
+        )
+        return response.content[0].text
+    ```
+
+=== "Google Gemini"
+
+    Install the Google Generative AI package:
+    ```bash
+    pip install google-generativeai
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    import google.generativeai as genai
+    
+    genai.configure(
+        api_key="your-api-key-here"
+    )  # or set GOOGLE_API_KEY env var
+    model = genai.GenerativeModel('gemini-1.5-pro')
+    
+    def query_lm(messages):
+        # Convert messages to Gemini format
+        chat = model.start_chat(history=[])
+        response = chat.send_message(messages[-1]["content"])
+        return response.text
+    ```
+
+=== "OpenRouter"
+
+    Install the OpenAI package (OpenRouter uses OpenAI-compatible API):
+    ```bash
+    pip install openai
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    from openai import OpenAI
+    
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key="your-api-key-here"
+    )  # or set OPENROUTER_API_KEY env var
+    
+    def query_lm(messages):
+        response = client.chat.completions.create(
+            model="anthropic/claude-3.5-sonnet",  # or any model on OpenRouter
+            messages=messages
+        )
+        return response.choices[0].message.content
+    ```
+
+=== "LiteLLM"
+
+    Install the LiteLLM package (supports 100+ LLM providers):
+    ```bash
+    pip install litellm
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    from litellm import completion
+    
+    def query_lm(messages):
+        response = completion(
+            model="gpt-4o",  # can be any provider: claude-3-5-sonnet, gemini/gemini-1.5-pro, etc.
+            messages=messages
+        )
+        return response.choices[0].message.content
+    ```
+
+=== "GLM"
+
+    Install the Zhipu AI package:
+    ```bash
+    pip install zhipuai
+    ```
+
+    Here's the minimal code to query the API:
+    ```python
+    from zhipuai import ZhipuAI
+    
+    client = ZhipuAI(
+        api_key="your-api-key-here"
+    )  # or set ZHIPUAI_API_KEY env var
+    
+    def query_lm(messages):
+        response = client.chat.completions.create(
+            model="glm-4-plus",
+            messages=messages
+        )
+        return response.choices[0].message.content
+    ```
+
+??? info "How to set environment variables"
+    Instead of hardcoding your API key in the code, you can set it as an environment variable. Note that these commands set the variable only for your current terminal session (not persistent).
+
+    === "Linux/macOS"
+    
+        ```bash
+        export OPENAI_API_KEY="your-api-key-here"
+        export ANTHROPIC_API_KEY="your-api-key-here"
+        export GOOGLE_API_KEY="your-api-key-here"
+        ```
+        
+        To make persistent, add to `~/.bashrc`, `~/.zshrc`, or your shell config file.
+
+    === "Windows (CMD)"
+    
+        ```cmd
+        set OPENAI_API_KEY=your-api-key-here
+        set ANTHROPIC_API_KEY=your-api-key-here
+        set GOOGLE_API_KEY=your-api-key-here
+        ```
+        
+        To make persistent, use "Environment Variables" in System Properties.
+
+    === "Windows (PowerShell)"
+    
+        ```powershell
+        $env:OPENAI_API_KEY="your-api-key-here"
+        $env:ANTHROPIC_API_KEY="your-api-key-here"
+        $env:GOOGLE_API_KEY="your-api-key-here"
+        ```
+        
+        To make persistent, use "Environment Variables" in System Properties.
 
 Now as for executing the action, it's actually very simple, we can just use python's `subprocess` module (or just `os.system`, though that's generally less recommended)
 
