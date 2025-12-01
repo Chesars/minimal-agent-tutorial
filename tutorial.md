@@ -1,4 +1,12 @@
-# Building a minimal AI agent for terminal use and more
+<div class="hero-title">
+  <h1 class="main-title">Building a minimal AI agent</h1>
+  <p class="subtitle">for terminal use and more</p>
+</div>
+
+<div class="author-box">
+  <p><strong>Authors:</strong> Kilian Lieret, Carlos Jimenez, John Yang, Ofir Press.</p>
+  <p><strong>Contributions by</strong> <a href="#contribute">Contribute</a></p>
+</div>
 
 So you want to build your own AI agent? The good news: It's super simple, especially with more recent language models.
 
@@ -130,7 +138,7 @@ Let's start with the first step. Click on the tabs to find the right LM for you.
     ```python
     from litellm import completion
     
-    def query_lm(messages):
+    def query_lm(messages: list[dict[str, str]]) -> str:
         response = completion(
             model="openai/gpt-5.1",  # can be any provider + model
             messages=messages
@@ -194,11 +202,19 @@ Let's start with the first step. Click on the tabs to find the right LM for you.
         
         To make persistent, use "Environment Variables" in System Properties.
 
+??? info "Type hints in python"
+
+    In case you're wondering about the `list[dict[str, str]]` and the `-> str` in the
+    previous code example, these are "type hints" and they are optional in python,
+    but they help your IDE or static checker (or even just yourself) to understand
+    the inputs and outputs of the function.
+
 Now as for executing the action, it's actually very simple, we can just use python's `subprocess` module (or just `os.system`, though that's generally less recommended)
 
 ```python
-def execute_action(...):
-   asdf
+def execute_action(action: str) -> str:
+    """Execution action, return output"""
+    asdf
 ```
 
 Let's put it together and run it!
@@ -215,6 +231,13 @@ Let's put it together and run it!
 
 ## mini-swe-agent
 
-## Contribute to this guide
+<h2 id="contribute">Contribute to this guide</h2>
 
-...
+We welcome contributions to improve this guide! Whether it's fixing typos, adding examples, or expanding sections, your input is valuable.
+
+To contribute:
+- Fork the repository
+- Make your changes
+- Submit a pull request
+
+You can find the source code on GitHub.

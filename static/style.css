@@ -103,6 +103,61 @@ header {
     padding: var(--spacing);
 }
 
+/* Hero title section */
+.hero-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+}
+
+.hero-title .main-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.hero-title .subtitle {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin: 0;
+    font-weight: 300;
+}
+
+/* Author box */
+.author-box {
+    background-color: var(--color-admonition-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.author-box p {
+    margin: 0.5rem 0;
+}
+
+.author-box strong {
+    font-weight: 600;
+}
+
+.author-box a {
+    color: var(--color-link);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color 0.2s ease;
+}
+
+.author-box a:hover {
+    border-bottom-color: var(--color-link);
+    text-decoration: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin-top: 2rem;
     margin-bottom: 1rem;
@@ -295,6 +350,18 @@ details summary:hover {
 
 details > *:not(summary) {
     padding: 0 1rem 1rem 1rem;
+}
+
+/* Fix list formatting inside details */
+details ul,
+details ol {
+    margin-bottom: 0.5rem;
+    padding-left: 2rem;
+}
+
+details li {
+    margin-bottom: 0.25rem;
+    line-height: 1.5;
 }
 
 details.info,
