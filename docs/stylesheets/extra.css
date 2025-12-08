@@ -40,55 +40,35 @@
     font-weight: 600;
 }
 
-/* Layout adjustments */
-:root {
-    --content-max: 40rem;   /* main text width (~800px) */
-    --toc-width: 16rem;     /* room for right TOC */
-    --layout-gap: 2rem;
+/* Hide left navigation sidebar to keep only the TOC on the right */
+.md-sidebar--primary {
+    display: none;
 }
 
-/* Keep sidebar on the right, but don't push main text left; center main text */
+/* Increase left margin for content */
+.md-content {
+    margin-left: 2rem;
+}
+
 @media screen and (min-width: 76.25em) {
-    .md-grid,
-    .md-main__inner {
-        max-width: calc(var(--content-max) + var(--toc-width) + 2 * var(--layout-gap));
-        width: 100%;
-    }
-
-    .md-main__inner {
-        display: grid;
-        grid-template-columns: 1fr minmax(0, var(--content-max)) var(--toc-width);
-        gap: var(--layout-gap);
-        align-items: start;
-    }
-
     .md-content {
-        grid-column: 2;
-    }
-
-    /* Primary sidebar (TOC) on the right */
-    .md-sidebar--primary {
-        grid-column: 3;
-        position: sticky;
-        top: var(--md-header-height, 3.2rem);
-        align-self: start;
-        left: auto;
-        right: 0;
-        order: 2;
-    }
-
-    /* Secondary sidebar not used */
-    .md-sidebar--secondary {
-        display: none;
+        margin-left: 6rem;
     }
 }
 
 /* More subtle header - white/black background instead of blue */
 .md-header {
+    position: static; /* let the header scroll away */
+    top: auto;
     background-color: var(--md-default-bg-color);
     color: var(--md-default-fg-color);
     box-shadow: 0 0 0.05rem rgba(0, 0, 0, 0.05), 0 0.05rem 0.1rem rgba(0, 0, 0, 0.025);
     border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+/* Remove top padding since the header is no longer sticky */
+.md-main {
+    padding-top: 0;
 }
 
 /* Simplify header inner spacing */
@@ -136,3 +116,4 @@
         font-size: 1.25rem;
     }
 }
+

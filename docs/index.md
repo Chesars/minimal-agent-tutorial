@@ -1,6 +1,6 @@
 <div class="hero-title">
   <h1 class="main-title">Building a minimal AI agent</h1>
-  <p class="subtitle">for terminal use and more</p>
+  <p class="subtitle">for software engineering, terminal use and more</p>
 </div>
 
 <div class="author-box">
@@ -569,7 +569,7 @@ class Environment:
 `mini-swe-agent` provides different environment classes that for example allow to execute actions in docker containers instead of directly in your local environment.
 Sonds more complicated? It really isn't: all we do is switch from `subprocess.run` to calls to `docker exec`.
 
-<h2 id="contribute">Contribute to this guide</h2>
+## Contribute to this guide
 
 We welcome contributions on GitHub to improve this guide! 
 

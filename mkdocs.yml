@@ -29,7 +29,6 @@ theme:
     - navigation.top
     - content.code.copy
     - content.code.annotate
-    - toc.integrate
     - navigation.tabs.sticky
 
 # Markdown extensions
