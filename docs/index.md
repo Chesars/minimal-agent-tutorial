@@ -483,7 +483,7 @@ while True:
         ...
 ```
 
-mini-swe-agent additionally [defines]() a `TerminatingException` class which is used instead of the `if action == "exit"` mechanism to stop the `while` loop in a graceful way:
+mini-swe-agent additionally [defines](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py#L33-L53) a `TerminatingException` class which is used instead of the `if action == "exit"` mechanism to stop the `while` loop in a graceful way:
 
 ```python
 class TerminatingException(RuntimeError): ...
@@ -530,7 +530,7 @@ def parse_action(action: str) -> str:
 ### Environment variables
 
 There's a couple of environment variables that we can set to disable interactive
-elements in command line tools that avoid the agent getting stuck (you can see them being set in the [`mini-swe-agent` SWE-bench config](...)):
+elements in command line tools that avoid the agent getting stuck (you can see them being set in the [`mini-swe-agent` SWE-bench config](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/config/extra/swebench.yaml)):
 
 ```python
 env_vars = {
@@ -559,7 +559,7 @@ def execute_action(command: str) -> str:
 [`mini-swe-agent`](https://github.com/swe-agent/mini-swe-agent) is built exactly according to the blueprint of this tutorial and it should be very easy for you to understand it's source code.
 The only important thing to note is that it is built more modular, so that you can swap out all components.
 
-The `Agent` class (]full code](...)) contains the big `while` loop in the `run` function
+The `Agent` class ([full code](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py)) contains the big `while` loop in the `run` function
 
 ```python
 class Agent:
@@ -573,7 +573,7 @@ class Agent:
             ...
 ```
 
-The model class ([full code](...)) handles different LMs
+The model class ([example for litellm](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/models/litellm_model.py)) handles different LMs
 
 ```python
 class Model:
@@ -581,7 +581,7 @@ class Model:
         ...
 ```
 
-and the environment class ([local environment](...)) executes actions:
+and the environment class ([local environment](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/environments/local.py)) executes actions:
 
 ```python
 class Environment:
