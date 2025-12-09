@@ -612,7 +612,7 @@ Sonds more complicated? It really isn't: all we do is switch from `subprocess.ru
 
 ## Contribute to this guide
 
-We welcome contributions on GitHub to improve this guide! 
+We welcome contributions [on GitHub](https://github.com/swe-agent/minimal-agent-tutorial) to improve this guide! 
 
 ??? Contribution guidelines
 
@@ -640,7 +640,7 @@ We welcome contributions on GitHub to improve this guide!
 
     You can find the source code on GitHub.
 
-If you have questions or comments, please comment below. Note that GitHub issues are still preferred for bug reports and discussions about further developing this page.
+If you have questions or comments, please comment below. Note that [GitHub issues](https://github.com/swe-agent/minimal-agent-tutorial/issues) are still preferred for bug reports and discussions about further developing this page.
 
 ## Comments
 
