@@ -20,5 +20,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Update giscus theme when Material theme changes
+    function updateGiscusTheme() {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        
+        // Get current theme from Material's data-md-color-scheme attribute
+        const scheme = document.body.getAttribute('data-md-color-scheme');
+        const theme = scheme === 'slate' ? 'dark' : 'light';
+        
+        // Send theme update message to giscus iframe
+        iframe.contentWindow.postMessage(
+            { giscus: { setConfig: { theme: theme } } },
+            'https://giscus.app'
+        );
+    }
+    
+    // Watch for theme changes using MutationObserver
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-md-color-scheme') {
+                updateGiscusTheme();
+            }
+        });
+    });
+    
+    // Start observing the body element for attribute changes
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['data-md-color-scheme']
+    });
+    
+    // Set initial theme when giscus loads
+    window.addEventListener('message', function(event) {
+        if (event.origin !== 'https://giscus.app') return;
+        if (!(typeof event.data === 'object' && event.data.giscus)) return;
+        
+        // Once giscus is ready, update its theme
+        updateGiscusTheme();
+    });
 });
 
