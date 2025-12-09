@@ -407,6 +407,14 @@ messages = [{
     "content": "List the files in the current directory"
 }]
 
+while True:
+	lm_output = query_lm(messages)
+	messages.append({"role": .., lm_output)  # remember what was executed
+	action = parse_action(lm_output)  # separate the action from output
+    if action == "exit":
+        break
+	output = execute_action(action)
+	messages.append({"role": ..., output)
 ```
 
 ## Let's make it more robust
@@ -600,3 +608,20 @@ We welcome contributions on GitHub to improve this guide!
     You can find the source code on GitHub.
 
 If you have questions or comments, please comment below. Note that GitHub issues are still preferred for bug reports and discussions about further developing this page.
+
+## Comments
+
+<script src="https://giscus.app/client.js"
+        data-repo="swe-agent/minimal-agent-tutorial"
+        data-repo-id="R_kgDOQaid2A"
+        data-mapping="number"
+        data-term="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>

@@ -81,3 +81,6 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/swe-agent/mini-swe-agent
+  analytics:
+    provider: google
+    property: G-SG2NC1GDRD
