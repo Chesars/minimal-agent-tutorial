@@ -420,7 +420,7 @@ Now as for executing the action, it's actually very simple, we can just use pyth
 
     - [Local environment](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/environments/local.py) - the closest equivalent to the code above
     - [Docker environment](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/environments/docker.py) - almost the same as local, except commands are executed via `docker exec` instead of `subprocess.run`
-    - [OpenHands Software Agent SDK](https://github.com/OpenHands/software-agent-sdk/blob/e6ab3d1bc4f832987ef13594da62dbbf38162918/openhands-sdk/openhands/sdk/utils/command.py#L29) - uses `Popen` with threading for real-time output streaming
+    - [OpenHands Software Agent SDK](https://github.com/OpenHands/software-agent-sdk/blob/e6ab3d1bc4f832987ef13594da62dbbf38162918/openhands-sdk/openhands/sdk/utils/command.py#L29) - uses `Popen` with threading
 
 There are a couple of limitations to this:
 
