@@ -12,7 +12,7 @@ So you want to build your own AI agent from scratch? The good news: It's super s
 We won't be using any external packages (other than to query the LM), and our initial minimal agent is only some 60 lines long.
 
 And if you think this is too simplified and can never work in practice: Our [`mini` agent](https://mini-swe-agent.com) is built exactly the same, and is used for research at Princeton, Stanford, NVIDIA, Anyscale, essentials.ai and more. 
-Using this simple guide you can score up to 74% on [SWE-bench verified](https://www.swebench.com/), only a few percent below highly optimized agents. 
+Using this simple guide you can score up to 74% on [SWE-bench verified](https://www.swebench.com/) with top models like Claude Opus 4.5 or Gemini 3 (and ~70% with Sonnet 4.5), only a few percent below highly optimized agents. 
 
 ## Our first prototype in 50 lines
 
