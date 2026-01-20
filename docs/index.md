@@ -572,6 +572,81 @@ def execute_action(command: str) -> str:
 ```
 
 
+## Going further
+
+The following sections add practical features that you'll likely want in any real-world agent.
+Each one is independent—pick what you need.
+
+### Cost tracking
+
+One of the first questions you'll ask after running your agent: "How much did that cost?"
+If you're using LiteLLM, this is surprisingly easy:
+
+```python
+import litellm
+
+def query_lm(messages: list[dict[str, str]]) -> tuple[str, dict]:
+    response = completion(
+        model="openai/gpt-4.1",
+        messages=messages
+    )
+    cost = litellm.cost_calculator.completion_cost(response, model="openai/gpt-4.1")
+    usage = {
+        "prompt_tokens": response.usage.prompt_tokens,
+        "completion_tokens": response.usage.completion_tokens,
+        "cost": cost,
+    }
+    return response.choices[0].message.content, usage
+```
+
+Then in your main loop, accumulate the costs:
+
+```python
+total_cost = 0
+while True:
+    lm_output, usage = query_lm(messages)
+    total_cost += usage["cost"]
+    print(f"Step cost: ${usage['cost']:.4f} | Total: ${total_cost:.4f}")
+    # ... rest of loop
+```
+
+??? example "Let's test it"
+    ```python
+    messages = [{"role": "user", "content": "Say hello"}]
+    output, usage = query_lm(messages)
+    print(f"Response: {output}")
+    print(f"Tokens: {usage['prompt_tokens']} in, {usage['completion_tokens']} out")
+    print(f"Cost: ${usage['cost']:.6f}")
+    ```
+
+??? info "Cost tracking with other providers"
+    If you're using the OpenAI or Anthropic SDKs directly, both return usage information in the response object. LiteLLM normalizes this across providers—one of the reasons we recommend it for multi-provider setups.
+
+### Cost limits
+
+Now that you're tracking costs, you probably want to set a limit. Without one, a confused agent could loop forever and rack up a serious bill. The fix is simple: check the cost before each query and pause the agent if it exceeds your budget.
+
+```python
+class CostLimitExceeded(Exception):
+    pass
+
+cost_limit = 3.0  # $3 max
+total_cost = 0
+
+while True:
+    # Check limit BEFORE querying
+    if cost_limit > 0 and total_cost >= cost_limit:
+        raise CostLimitExceeded(f"Cost limit ${cost_limit} exceeded")
+
+    lm_output, usage = query_lm(messages)
+    total_cost += usage["cost"]
+    # ... rest of loop
+```
+
+??? info "In production"
+    In [mini-swe-agent](https://github.com/swe-agent/mini-swe-agent/blob/main/src/minisweagent/agents/default.py), cost limits raise a `LimitsExceeded` exception that gracefully terminates the agent. The interactive mode even lets users extend the limit at runtime if needed.
+
+
 ## mini-swe-agent
 
 [`mini-swe-agent`](https://github.com/swe-agent/mini-swe-agent) is built exactly according to the blueprint of this tutorial and it should be very easy for you to understand it's source code.
