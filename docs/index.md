@@ -624,7 +624,8 @@ while True:
 
 ### Cost limits
 
-Now that you're tracking costs, you probably want to set a limit. Without one, a confused agent could loop forever and rack up a serious bill. The fix is simple: check the cost before each query and pause the agent if it exceeds your budget.
+Once you're tracking costs, it's a good idea to set a budget limit.
+This prevents the agent from running too long and exceeding the budget.
 
 ```python
 class CostLimitExceeded(Exception):
